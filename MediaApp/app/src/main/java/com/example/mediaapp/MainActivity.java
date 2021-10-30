@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 //        mediaPlayer = MediaPlayer.create(this, R.raw.song);
         mediaPlayer = new MediaPlayer();
+        seekBar = findViewById(R.id.seekBar);
         try {
             mediaPlayer.setDataSource("http://penguinradio.dominican.edu/Sound%20FX%20Collection/Motorbike.mp3");
         } catch (IOException e) {
@@ -33,12 +34,32 @@ public class MainActivity extends AppCompatActivity {
             public void onPrepared(MediaPlayer mp) {
                 Toast.makeText(MainActivity.this, "Ready to Play", Toast.LENGTH_SHORT).show();
                 mp.start();
+                seekBar.setMax(mediaPlayer.getDuration());
+                seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        if (fromUser){
+                            mediaPlayer.seekTo(progress);
+                        }
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    }
+                });
             }
         });
         mediaPlayer.prepareAsync();
         mediaPlayer.start();
 
-        seekBar = findViewById(R.id.seekBar);
+
+
         play = findViewById(R.id.play);
         pause = findViewById(R.id.pause);
         play.setOnClickListener(new View.OnClickListener() {
